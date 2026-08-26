@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block title %}
+编辑学习单元 - 中文学习
+{% endblock %}
+
+{% block main %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 mb-1">教师管理</h1>
+            <p class="text-secondary mb-0">管理学习单元和中文词汇</p>
+        </div>
+        <a href="{{ url_for('routes.index') }}" class="btn btn-outline-secondary">返回学习平台</a>
+    </div>
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('routes.admin') }}">📊 管理首页</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('routes.admin_students') }}">👤 学生管理</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('routes.create_section') }}">＋ 新建单元</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('routes.sections') }}">📚 所有单元</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('routes.leaderboard') }}">🏆 排行榜</a>
+        </li>
+    </ul>
+
+    <div class="mb-4">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <a href="{{ url_for('routes.admin') }}" class="text-secondary text-decoration-none">教师管理</a>
+            <span class="text-secondary">/</span>
+            <a href="{{ url_for('routes.admin_section', section_id=section['id']) }}" class="text-secondary text-decoration-none">{{ section['title'] }}</a>
+            <span class="text-secondary">/</span>
+            <span class="text-secondary">编辑</span>
+        </div>
+        <h1 class="h2 fw-bold mb-2">编辑学习单元</h1>
+        <p class="text-secondary mb-0">修改「{{ section['title'] }}」的基本信息</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <form action="{{ url_for('routes.edit_section', section_id=section['id']) }}" method="POST">
+
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-semibold">单元名称</label>
+                            <input
+                                type="text"
+                                class="form-control form-control-lg"
+                                id="title"
+                                name="title"
+                                value="{{ section['title'] }}"
+                                maxlength="100"
+                                required
+                                autofocus
+                            >
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-semibold">单元描述</label>
+                            <textarea
+                                class="form-control"
+                                id="description"
+                                name="description"
+                                rows="5"
+                            >{{ section['description'] or '' }}</textarea>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('routes.admin_section', section_id=section['id']) }}" class="btn btn-outline-secondary">取消</a>
+                            <button type="submit" class="btn btn-primary px-4">保存修改</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="fs-2 mb-3">✏️</div>
+                    <h5 class="fw-bold">关于编辑</h5>
+                    <p class="text-secondary mb-0">修改单元名称或描述后，点击「保存修改」即可生效。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
