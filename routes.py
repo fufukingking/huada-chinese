@@ -367,6 +367,59 @@ def delete_section(section_id):
 
 
 # ============================================================
+# MANAGE STUDENTS
+# ============================================================
+
+@bp.route("/admin/students")
+@login_required
+def admin_students():
+    if session.get("role") != "teacher":
+        return apology("只有教师可以执行此操作", 403)
+
+    db = get_db()
+    students = db.execute(
+        """SELECT id, username, total_points, created_at
+        FROM users WHERE role = 'student'
+        ORDER BY created_at DESC"""
+    ).fetchall()
+    db.close()
+
+    return render_template("admin/students.html", students=students)
+
+
+@bp.route("/admin/student/<int:user_id>/delete")
+@login_required
+def delete_student(user_id):
+    if session.get("role") != "teacher":
+        return apology("只有教师可以执行此操作", 403)
+
+    db = get_db()
+    user = db.execute(
+        "SELECT * FROM users WHERE id = ?", (user_id,)
+    ).fetchone()
+
+    if user is None:
+        db.close()
+        return apology("学生不存在", 404)
+
+    if user["role"] == "teacher":
+        db.close()
+        return apology("不能删除教师账户", 403)
+
+    try:
+        db.execute("DELETE FROM users WHERE id = ?", (user_id,))
+        db.commit()
+    except psycopg.Error as e:
+        db.rollback()
+        db.close()
+        return apology(f"数据库错误: {e}", 500)
+
+    db.close()
+    flash(f"学生 {user['username']} 已删除！")
+    return redirect("/admin/students")
+
+
+# ============================================================
 # LEADERBOARD
 # ============================================================
 
