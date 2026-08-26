@@ -126,6 +126,22 @@
 
                         </div>
 
+                        {% if session.get("role") == "teacher" %}
+
+                            <div class="card-footer bg-white border-0 pb-3">
+
+                                <a
+                                    href="/admin/vocabulary/{{ word['id'] }}/delete"
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('确定要删除词汇「{{ word['chinese'] }}」吗？');"
+                                >
+                                    删除词汇
+                                </a>
+
+                            </div>
+
+                        {% endif %}
+
                     </div>
 
                 </div>
@@ -135,20 +151,4 @@
         </div>
 
 
-    <!-- ================================================== -->
-    <!-- NO VOCABULARY -->
-    <!-- ================================================== -->
-
-    {% else %}
-
-        <div class="alert alert-info text-center">
-
-            此单元还没有词汇。请稍后再来，或者联系管理员添加词汇。
-
-        </div>
-
-    {% endif %}
-
-</div>
-
-{% endblock %}
+    <!-- =====
