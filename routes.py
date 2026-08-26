@@ -339,6 +339,51 @@ def delete_vocabulary(vocabulary_id):
     return redirect(f"/admin/section/{section_id}")
 
 
+@bp.route("/admin/section/<int:section_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_section(section_id):
+    if session.get("role") != "teacher":
+        return apology("只有教师可以执行此操作", 403)
+
+    db = get_db()
+    sec = db.execute(
+        "SELECT * FROM sections WHERE id = ?", (section_id,)
+    ).fetchone()
+
+    if sec is None:
+        db.close()
+        return apology("学习单元不存在", 404)
+
+    if request.method == "GET":
+        db.close()
+        return render_template("admin/edit_section.html", section=sec)
+
+    title = request.form.get("title", "").strip()
+    description = request.form.get("description", "").strip()
+
+    if not title:
+        db.close()
+        return apology("请输入单元名称", 400)
+    if len(title) > 100:
+        db.close()
+        return apology("单元名称不能超过100个字符", 400)
+
+    try:
+        db.execute(
+            "UPDATE sections SET title = ?, description = ? WHERE id = ?",
+            (title, description, section_id),
+        )
+        db.commit()
+    except psycopg.Error as e:
+        db.rollback()
+        db.close()
+        return apology(f"数据库错误: {e}", 500)
+
+    db.close()
+    flash("学习单元已更新！")
+    return redirect(f"/admin/section/{section_id}")
+
+
 @bp.route("/admin/section/<int:section_id>/delete")
 @login_required
 def delete_section(section_id):
