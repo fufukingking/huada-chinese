@@ -8,10 +8,6 @@
 
 <div class="container mt-4">
 
-    <!-- ================================================== -->
-    <!-- NAVIGATION -->
-    <!-- ================================================== -->
-
     <div class="mb-4">
 
         <a
@@ -48,25 +44,15 @@
 
     </div>
 
-
-    <!-- ================================================== -->
-    <!-- SECTION HEADER -->
-    <!-- ================================================== -->
-
     <div class="text-center mb-5">
 
-        <h1>
-            {{ section["title"] }}
-        </h1>
+        <h1>{{ section["title"] }}</h1>
 
         {% if section["description"] %}
 
-            <p class="text-muted">
-                {{ section["description"] }}
-            </p>
+            <p class="text-muted">{{ section["description"] }}</p>
 
         {% endif %}
-
 
         <div class="mt-4">
 
@@ -81,16 +67,9 @@
 
     </div>
 
-
-    <!-- ================================================== -->
-    <!-- VOCABULARY -->
-    <!-- ================================================== -->
-
     {% if vocabulary %}
 
-        <h2 class="mb-4">
-            Vokabeln
-        </h2>
+        <h2 class="mb-4">Vokabeln</h2>
 
         <div class="row">
 
@@ -102,26 +81,14 @@
 
                         <div class="card-body text-center">
 
-                            <h3 class="card-title">
-                                {{ word["chinese"] }}
-                            </h3>
-
+                            <h3 class="card-title">{{ word["chinese"] }}</h3>
 
                             {% if word["pinyin"] %}
-
-                                <p class="text-muted mb-2">
-                                    {{ word["pinyin"] }}
-                                </p>
-
+                                <p class="text-muted mb-2">{{ word["pinyin"] }}</p>
                             {% endif %}
 
-
                             {% if word["translation"] %}
-
-                                <p class="fs-5">
-                                    {{ word["translation"] }}
-                                </p>
-
+                                <p class="fs-5">{{ word["translation"] }}</p>
                             {% endif %}
 
                         </div>
@@ -150,17 +117,10 @@
 
         </div>
 
-
-    <!-- ================================================== -->
-    <!-- NO VOCABULARY -->
-    <!-- ================================================== -->
-
     {% else %}
 
         <div class="alert alert-info text-center">
-
             此单元还没有词汇。请稍后再来，或者联系管理员添加词汇。
-
         </div>
 
     {% endif %}
